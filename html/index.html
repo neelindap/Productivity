@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Productivity</title>
+
+    <script>window.$ = window.jQuery = require('../node_modules/jquery/dist/jquery.min.js');</script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand">Productivity</a>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <form>
+            <div class="form-group">
+                <label for="work-time">Work Time(in minutes): </label>
+                <input id="work-time" type="text" class="form-control" placeholder="Work Time">
+            </div>
+            <div class="form-group">
+                <label for="rest-time">Rest Time(in minutes): </label>
+                <input id="rest-time" type="text" class="form-control" placeholder="Rest Time">
+            </div>
+            <div class="alert alert-success alert-dismissable" id="success-msg" style="display:none;">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Success!</strong> Timing updated.
+            </div>
+            <button class="btn btn-primary" type="submit">Update</button>
+        </form>
+    </div>
+
+    <script>
+        const electron = require('electron')
+        const { ipcRenderer } = electron;
+
+        // Populate set data
+        ipcRenderer.on('time:data', function (error, data) {
+            document.getElementById('work-time').value = data.work
+            document.getElementById('rest-time').value = data.rest
+        });
+
+        const form = document.querySelector('form')
+        form.addEventListener('submit', updateTime)
+
+        function updateTime(e) {
+            e.preventDefault();
+
+            time = {
+                work: document.getElementById('work-time').value,
+                rest: document.getElementById('rest-time').value
+            }
+
+            // Send data to main process
+            ipcRenderer.send('time:data', time)
+
+            $("#success-msg").show('1500');
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "productivity",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [
+    "Electron",
+    "Javascript"
+  ],
+  "author": "Neel Indap",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "electron": "^1.7.8",
+    "electron-json-storage": "^3.1.0",
+    "electron-notify": "^0.1.0",
+    "jquery": "^3.2.1"
+  }
+}
